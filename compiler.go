@@ -7,8 +7,8 @@ import (
 )
 
 type line struct {
-	str          string
-	indent_level uint32
+	str         string
+	indentLevel uint32
 }
 
 type Compiler struct {
@@ -49,7 +49,7 @@ func NewCompiler(raw string) *Compiler {
 	lines := make([]line, len(raw_lines))
 	for i := range lines {
 		lines[i].str = raw_lines[i]
-		lines[i].indent_level = indentLevel(lines[i].str)
+		lines[i].indentLevel = indentLevel(lines[i].str)
 	}
 	return &Compiler{lines}
 }
