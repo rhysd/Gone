@@ -20,6 +20,6 @@ func main() {
 		return
 	}
 
-	compiler := CreateCompiler(string(content))
+	compiler := NewCompiler(string(content))
 	fmt.Println(compiler.Compile())
 }
