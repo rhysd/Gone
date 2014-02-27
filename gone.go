@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -21,5 +22,5 @@ func main() {
 	}
 
 	compiler := NewCompiler(string(content))
-	fmt.Println(compiler.Compile())
+	fmt.Println(strings.Join(compiler.Compile(), "\n"))
 }
