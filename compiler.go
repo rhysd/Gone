@@ -16,11 +16,19 @@ type Compiler struct {
 }
 
 func (self *Compiler) Compile() []string {
-	lines := make([]string, len(self.code))
-	for i := range lines {
-		lines[i] = self.code[i].str
+	stack := BlockStack{}
+	current_indent := 0
+	compiled := make([]string, 0, len(self.code)*2)
+
+	for _, l := range self.code {
+		if current_indent < l.indent_level {
+			compiled[len(compiled)-1] += " {"
+			stack.Emplace(len(compiled), l.indent_level)
+			current_indent = l.indent_level
+		}
+		compiled = append(compiled, l.str)
 	}
-	return lines
+	return compiled
 }
 
 func isEmptyLine(line string) bool {
@@ -49,7 +57,7 @@ func NewCompiler(raw string) *Compiler {
 	lines := make([]line, len(raw_lines))
 	for i := range lines {
 		lines[i].str = raw_lines[i]
-		lines[i].indentLevel = indentLevel(lines[i].str)
+		lines[i].indent_level = getIndentLevel(lines[i].str)
 	}
 	return &Compiler{lines}
 }
