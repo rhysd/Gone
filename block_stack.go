@@ -5,8 +5,8 @@ import (
 )
 
 type Block struct {
-	Line        uint32
-	IndentLevel uint32
+	Line        int
+	IndentLevel int
 }
 
 type blockNode struct {
@@ -16,7 +16,7 @@ type blockNode struct {
 
 type BlockStack struct {
 	Top  *blockNode
-	Size uint32
+	Size int
 }
 
 func (self *BlockStack) Push(block Block) {
@@ -31,7 +31,7 @@ func (self *BlockStack) Pop() {
 	}
 }
 
-func (self *BlockStack) Emplace(line, indentLevel uint32) {
+func (self *BlockStack) Emplace(line, indentLevel int) {
 	self.Push(Block{line, indentLevel})
 }
 

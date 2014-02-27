@@ -7,8 +7,8 @@ import (
 )
 
 type line struct {
-	str         string
-	indentLevel uint32
+	str          string
+	indent_level int
 }
 
 type Compiler struct {
@@ -28,8 +28,8 @@ func isEmptyLine(line string) bool {
 	return re.MatchString(line)
 }
 
-func indentLevel(line string) uint32 {
-	var level uint32 = 0
+func getIndentLevel(line string) int {
+	var level int = 0
 	for _, r := range line {
 		if !unicode.IsSpace(r) {
 			return level
