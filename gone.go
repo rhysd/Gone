@@ -23,10 +23,14 @@ func main() {
 
 	content, err := ioutil.ReadFile(flag.Arg(0))
 	if err != nil {
-		fmt.Println(err)
+		fmt.Fprintln(os.Stderr, err)
 		return
 	}
 
 	compiler := NewCompiler(string(content))
-	fmt.Println(strings.Join(compiler.Compile(), "\n"))
+	err = ioutil.WriteFile("hoge.go", []byte(strings.Join(compiler.Compile(), "\n")), 0644)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return
+	}
 }
