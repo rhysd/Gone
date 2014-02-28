@@ -17,21 +17,16 @@ type Compiler struct {
 
 func (self *Compiler) Compile() []string {
 	stack := BlockStack{}
-	current_indent := 0
+	previous_indent := 0
 	compiled := make([]string, 0, len(self.code)*2)
 
 	for _, l := range self.code {
-		if isEmptyLine(l.str) || current_indent == l.indent_level {
+		if isEmptyLine(l.str) || previous_indent == l.indent_level {
 			compiled = append(compiled, l.str)
 			continue
 		}
 
-		if current_indent < l.indent_level {
-			compiled[len(compiled)-1] += " {"
-			stack.Emplace(len(compiled), l.indent_level)
-		}
-
-		if l.indent_level < current_indent {
+		if l.indent_level < previous_indent {
 			for !stack.IsEmpty() {
 				top_block := stack.Top()
 				if top_block.IndentLevel < current_indent {
@@ -42,8 +37,13 @@ func (self *Compiler) Compile() []string {
 			}
 		}
 
+		if previous_indent < l.indent_level {
+			compiled[len(compiled)-1] += " {"
+			stack.Emplace(len(compiled), l.indent_level)
+		}
+
 		compiled = append(compiled, l.str)
-		current_indent = l.indent_level
+		previous_indent = l.indent_level
 	}
 	return compiled
 }
