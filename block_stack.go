@@ -15,28 +15,36 @@ type blockNode struct {
 }
 
 type BlockStack struct {
-	Top  *blockNode
+	top  *blockNode
 	Size int
 }
 
 func (self *BlockStack) Push(block Block) {
-	self.Top = &blockNode{block, self.Top}
+	self.top = &blockNode{block, self.top}
 	self.Size++
 }
 
 func (self *BlockStack) Pop() {
 	if self.Size > 0 {
-		self.Top = self.Top.next
+		self.top = self.top.next
 		self.Size--
 	}
+}
+
+func (self *BlockStack) Top() Block {
+	return self.top.value
 }
 
 func (self *BlockStack) Emplace(line, indentLevel int) {
 	self.Push(Block{line, indentLevel})
 }
 
+func (self *BlockStack) IsEmpty() bool {
+	return self.Size == 0
+}
+
 func (self *BlockStack) Show() {
-	p := self.Top
+	p := self.top
 	for p != nil {
 		fmt.Println(p.value)
 		p = p.next
