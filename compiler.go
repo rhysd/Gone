@@ -29,7 +29,7 @@ func (self *Compiler) Compile() []string {
 		if l.indent_level < previous_indent {
 			for !stack.IsEmpty() {
 				top_block := stack.Top()
-				if top_block.IndentLevel < current_indent {
+				if top_block.IndentLevel < l.indent_level {
 					break
 				}
 				compiled = append(compiled, "}")
