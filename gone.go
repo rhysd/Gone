@@ -11,7 +11,13 @@ import (
 func main() {
 	flag.Parse()
 	if flag.NArg() == 0 {
-		fmt.Fprintln(os.Stderr, "required 1 or more arguments")
+		fmt.Fprintln(os.Stderr, "1 or more arguments are required")
+		return
+	}
+
+	// FIXME: Now, only first argument would be compiled.
+	if !strings.HasSuffix(flag.Arg(0), ".gone") {
+		fmt.Fprintln(os.Stderr, "File name extension must be \".gone\": "+flag.Arg(0))
 		return
 	}
 
