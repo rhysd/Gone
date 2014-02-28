@@ -21,14 +21,15 @@ func main() {
 		return
 	}
 
-	content, err := ioutil.ReadFile(flag.Arg(0))
+	filename := flag.Arg(0)
+	content, err := ioutil.ReadFile(filename)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return
 	}
 
 	compiler := NewCompiler(string(content))
-	err = ioutil.WriteFile("hoge.go", []byte(strings.Join(compiler.Compile(), "\n")), 0644)
+	err = ioutil.WriteFile(filename[:strings.LastIndex(filename, ".gone")]+".go", []byte(strings.Join(compiler.Compile(), "\n")), 0644)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return
