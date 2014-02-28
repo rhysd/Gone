@@ -21,7 +21,8 @@ func (self *Compiler) Compile() []string {
 	compiled := make([]string, 0, len(self.code)*2)
 
 	for _, l := range self.code {
-		if isEmptyLine(l.str) {
+		if isEmptyLine(l.str) || current_indent == l.indent_level {
+			compiled = append(compiled, l.str)
 			continue
 		}
 
@@ -29,8 +30,6 @@ func (self *Compiler) Compile() []string {
 			compiled[len(compiled)-1] += " {"
 			stack.Emplace(len(compiled), l.indent_level)
 		}
-
-		compiled = append(compiled, l.str)
 
 		if l.indent_level < current_indent {
 			for !stack.IsEmpty() {
@@ -43,6 +42,7 @@ func (self *Compiler) Compile() []string {
 			}
 		}
 
+		compiled = append(compiled, l.str)
 		current_indent = l.indent_level
 	}
 	return compiled
@@ -71,6 +71,7 @@ func getIndentLevel(line string) int {
 
 func NewCompiler(raw string) *Compiler {
 	raw_lines := strings.Split(raw, "\n")
+
 	lines := make([]line, len(raw_lines))
 	for i := range lines {
 		lines[i].str = raw_lines[i]
