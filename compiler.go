@@ -39,7 +39,7 @@ func (self *Compiler) Compile() []string {
 
 		if previous_indent < l.indent_level {
 			compiled[len(compiled)-1] += " {"
-			stack.Emplace(len(compiled), l.indent_level)
+			stack.Emplace(len(compiled)-1, previous_indent)
 		}
 
 		compiled = append(compiled, l.str)
