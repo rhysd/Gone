@@ -21,18 +21,35 @@ func (self *Compiler) Compile() []string {
 	compiled := make([]string, 0, len(self.code)*2)
 
 	for _, l := range self.code {
+		if isEmptyLine(l.str) {
+			continue
+		}
+
 		if current_indent < l.indent_level {
 			compiled[len(compiled)-1] += " {"
 			stack.Emplace(len(compiled), l.indent_level)
-			current_indent = l.indent_level
 		}
+
 		compiled = append(compiled, l.str)
+
+		if l.indent_level < current_indent {
+			for !stack.IsEmpty() {
+				top_block := stack.Top()
+				if top_block.IndentLevel > current_indent {
+					break
+				}
+				compiled = append(compiled, "}\n")
+				stack.Pop()
+			}
+		}
+
+		current_indent = l.indent_level
 	}
 	return compiled
 }
 
 func isEmptyLine(line string) bool {
-	re := regexp.MustCompile(`^\\s*(:?#.*)?$`)
+	re := regexp.MustCompile(`^\s*(:?#.*)?$`)
 	return re.MatchString(line)
 }
 
