@@ -34,10 +34,10 @@ func (self *Compiler) Compile() []string {
 		if l.indent_level < current_indent {
 			for !stack.IsEmpty() {
 				top_block := stack.Top()
-				if top_block.IndentLevel > current_indent {
+				if top_block.IndentLevel < current_indent {
 					break
 				}
-				compiled = append(compiled, "}\n")
+				compiled = append(compiled, "}")
 				stack.Pop()
 			}
 		}
