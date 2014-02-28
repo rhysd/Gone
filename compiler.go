@@ -49,7 +49,7 @@ func (self *Compiler) Compile() []string {
 }
 
 func isEmptyLine(line string) bool {
-	re := regexp.MustCompile(`^\s*(:?#.*)?$`)
+	re := regexp.MustCompile(`^\s*(:?//.*)?$`)
 	return re.MatchString(line)
 }
 
