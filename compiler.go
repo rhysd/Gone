@@ -45,6 +45,12 @@ func (self *Compiler) Compile() []string {
 		compiled = append(compiled, l.str)
 		previous_indent = l.indent_level
 	}
+
+	for !stack.IsEmpty() {
+		compiled = append(compiled, "}")
+		stack.Pop()
+	}
+
 	return compiled
 }
 
